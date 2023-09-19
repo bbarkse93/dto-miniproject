@@ -26,6 +26,7 @@ public class OrderService {
 
     // (기능4) 주문상품 정보조회 (유저별) - CartJPARepository의 정보를 조회해야함
     public OrderResponse.FindAllByUserDTO findAllByUser(User sessionUser) {
+        List<Cart> carts = cartJPARepository.findAllByUserId(sessionUser.getId());
         return null;
     }
 
@@ -69,6 +70,11 @@ public class OrderService {
         } catch (Exception e) {
             throw new Exception500("장바구니 초기화 실패 : " + e.getMessage());
         }
+    }
+
+
+    public List<Cart> findAllByUser(int i) {
+        return null;
     }
 
 }

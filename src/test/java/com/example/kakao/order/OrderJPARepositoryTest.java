@@ -1,14 +1,16 @@
 package com.example.kakao.order;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 @DataJpaTest
-public class OrderJPARepository {
+public class OrderJPARepositoryTest {
+
 
     @Test
     public void findByid_test() {
 
     }
-
 }
+    
+
