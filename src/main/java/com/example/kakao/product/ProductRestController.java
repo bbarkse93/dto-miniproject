@@ -21,8 +21,19 @@ public class ProductRestController {
     }
 
     // (기능2) 상품 상세보기
-    @GetMapping("/products/{id}")
-    public ResponseEntity<?> findById(@PathVariable int id) {
+    @GetMapping("/products/{id}/v1") // (상품조회+옵션조회, 조회2번)
+    public ResponseEntity<?> findByIdV1(@PathVariable int id) {
+        ProductResponse.FindByIdV1DTO responseDTO = productService.findByIdV1(id);
+        return ResponseEntity.ok(responseDTO);
+    }
+
+    @GetMapping("/products/{id}/v2") // (상품만조회, 양방향 맵핑)
+    public ResponseEntity<?> findByIdV2(@PathVariable int id) {
+        return null;
+    }
+
+    @GetMapping("/products/{id}/v3") // (옵션만 조회)
+    public ResponseEntity<?> findByIdV3(@PathVariable int id) {
         return null;
     }
 }
