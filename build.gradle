@@ -18,9 +18,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor ('org.projectlombok:lombok')
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	// https://mvnrepository.com/artifact/junit/junit
-	testImplementation group: 'junit', name: 'junit', version: '4.13.2'
+	
+	
 
 
 	// local
