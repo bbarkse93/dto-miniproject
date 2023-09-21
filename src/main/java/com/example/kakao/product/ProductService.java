@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kakao._core.errors.exception.Exception404;
+import com.example.kakao.product.ProductResponse.FindByIdV1DTO;
 import com.example.kakao.product.option.Option;
 import com.example.kakao.product.option.OptionJPARepository;
 
@@ -31,5 +32,12 @@ public class ProductService {
                 .orElseThrow(() -> new Exception404("해당 id의 상품을 찾을 수 없습니다 : " + id));
         List<Option> optionsPS = optionJPARepository.findByProductId(id);
         return new ProductResponse.FindByIdV1DTO(productPS, optionsPS);
+    }
+
+    // 양방향맵핑
+    public ProductResponse.FindByIdV2DTO findByIdV2(int id) {
+        Product productPS = productJPARepository.findById(id)
+                .orElseThrow(() -> new Exception404("해당 id의 상품을 찾을 수 없습니다 : " + id));
+        return new ProductResponse.FindByIdV2DTO(productPS);
     }
 }

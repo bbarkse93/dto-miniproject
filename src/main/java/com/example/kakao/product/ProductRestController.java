@@ -29,7 +29,8 @@ public class ProductRestController {
 
     @GetMapping("/products/{id}/v2") // (상품만조회, 양방향 맵핑)
     public ResponseEntity<?> findByIdV2(@PathVariable int id) {
-        return null;
+        ProductResponse.FindByIdV2DTO responseDTO = productService.findByIdV2(id);
+        return ResponseEntity.ok(responseDTO);
     }
 
     @GetMapping("/products/{id}/v3") // (옵션만 조회)
