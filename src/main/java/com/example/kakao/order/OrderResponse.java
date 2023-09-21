@@ -1,12 +1,11 @@
 package com.example.kakao.order;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import com.example.kakao.cart.Cart;
-import com.example.kakao.order.OrderResponse.FindByIdDTO.ProductDTO;
 import com.example.kakao.order.item.Item;
 import com.example.kakao.product.Product;
-import com.example.kakao.product.option.Option;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -21,28 +20,32 @@ public class OrderResponse {
     public static class FindAllByUserDTO {
 
         private Integer totalPrice;
-        private List<Cart> carts;
+        private List<CartDTO> carts;
         
         public FindAllByUserDTO(Integer totalPrice, List<Cart> carts) {
             this.totalPrice = totalPrice;
-            this.carts = carts;
+            this.carts = carts.stream()
+                    .map(c -> new CartDTO(c))
+                    .collect(Collectors.toList());
         }
 
         @Getter @Setter
         public class CartDTO{
             private Integer cartId;
             private Integer optionId;
-            private String optionName;
-            private int quantity;
-            private int cartPrice;
-            
+            private String productOptionName;
+            private Integer quantity;
+            private Integer cartPrice;
+
+
             public CartDTO(Cart cart) {
                 this.cartId = cart.getId();
                 this.optionId = cart.getOption().getId();
+                this.productOptionName = cart.getOption().getProduct().getProductName()+" "+cart.getOption().getOptionName();
+                this.quantity = cart.getQuantity();
+                this.cartPrice = cart.getPrice();
             }
-            
         }
-
     }
 
     // (기능5) 주문결과 확인

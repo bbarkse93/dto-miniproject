@@ -26,8 +26,14 @@ public class OrderService {
 
     // (기능4) 주문상품 정보조회 (유저별) - CartJPARepository의 정보를 조회해야함
     public OrderResponse.FindAllByUserDTO findAllByUser(User sessionUser) {
-        List<Cart> carts = cartJPARepository.findAllByUserId(sessionUser.getId());
-        return null;
+        List<Cart> carts = cartJPARepository.mFindAllByUserId(sessionUser.getId());
+
+        int totalPrice = 0;
+        for (Cart cart : carts) {
+            totalPrice += cart.getPrice();
+        }
+
+        return new OrderResponse.FindAllByUserDTO(totalPrice, carts);
     }
 
     
@@ -73,7 +79,7 @@ public class OrderService {
     }
 
 
-    public List<Cart> findAllByUser(int i) {
+    public List<Cart> findAllByUser() {
         return null;
     }
 
