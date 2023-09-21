@@ -22,6 +22,7 @@ public class ProductResponse {
 
     // (기능2) 상품 상세보기
 
+    @Getter
     @Setter
     public static class FindByIdDTO {
 
