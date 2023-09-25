@@ -1,5 +1,7 @@
 package com.example.kakao.product;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,7 +19,8 @@ public class ProductRestController {
     // (기능1) 상품 목록보기
     @GetMapping("/products")
     public ResponseEntity<?> findAll(@RequestParam(value = "page", defaultValue = "0") Integer page) {
-        return null;
+        List<ProductResponse.FindAllDTO> responseDTO = productService.findAll(page);
+        return ResponseEntity.ok().body(responseDTO);
     }
 
     // (기능2) 상품 상세보기
