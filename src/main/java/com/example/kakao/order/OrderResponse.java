@@ -21,7 +21,7 @@ public class OrderResponse {
 
         private Integer totalPrice;
         private List<CartDTO> carts;
-        
+
         public FindAllByUserDTO(Integer totalPrice, List<Cart> carts) {
             this.totalPrice = totalPrice;
             this.carts = carts.stream()
@@ -29,19 +29,20 @@ public class OrderResponse {
                     .collect(Collectors.toList());
         }
 
-        @Getter @Setter
-        public class CartDTO{
+        @Getter
+        @Setter
+        public class CartDTO {
             private Integer cartId;
             private Integer optionId;
             private String productOptionName;
             private Integer quantity;
             private Integer cartPrice;
 
-
             public CartDTO(Cart cart) {
                 this.cartId = cart.getId();
                 this.optionId = cart.getOption().getId();
-                this.productOptionName = cart.getOption().getProduct().getProductName()+" "+cart.getOption().getOptionName();
+                this.productOptionName = cart.getOption().getProduct().getProductName() + " "
+                        + cart.getOption().getOptionName();
                 this.quantity = cart.getQuantity();
                 this.cartPrice = cart.getPrice();
             }
@@ -55,13 +56,16 @@ public class OrderResponse {
     public static class FindByIdDTO {
 
         private Integer totalPrice;
-        private ProductDTO product;
-        private List<Item> items;
+        private List<ProductDTO> products;
 
-        public FindByIdDTO(Integer totalPrice, ProductDTO product, List<Item> items) {
-            this.totalPrice = totalPrice;
-            this.product = product;
-            this.items = items;
+        public FindByIdDTO(List<Item> itemList) {
+            this.totalPrice = itemList.stream().mapToInt(i -> i.getPrice()).sum();
+
+            this.products = itemList.stream()
+                    .map(i -> i.getOption().getProduct()).distinct()
+                    .map(p -> new ProductDTO(p, itemList))
+                    .collect(Collectors.toList());
+
         }
 
         // product
@@ -70,13 +74,37 @@ public class OrderResponse {
         public class ProductDTO {
             private Integer productId;
             private String productName;
+            private List<ItemDTO> items;
 
-            public ProductDTO(Product product) {
+            public ProductDTO(Product product, List<Item> itemList) {
                 this.productId = product.getId();
                 this.productName = product.getProductName();
+                this.items = itemList.stream()
+                        .filter(i -> i.getOption().getProduct().getId() == product.getId())
+                        .map(i -> new ItemDTO(i))
+                        .collect(Collectors.toList());
             }
 
         }
 
+        @Getter
+        @Setter
+        public class ItemDTO {
+            private Integer itemId;
+            private Integer optionId;
+            private String optionName;
+            private Integer quantity;
+            private Integer itemPrice;
+
+            public ItemDTO(Item item) {
+                this.itemId = item.getId();
+                this.optionId = item.getOption().getId();
+                this.optionName = item.getOption().getOptionName();
+                this.quantity = item.getQuantity();
+                this.itemPrice = item.getPrice();
+            }
+
+        }
     }
+
 }

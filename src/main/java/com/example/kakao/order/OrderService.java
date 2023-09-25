@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 @Service
 public class OrderService {
-    private final ItemJPARepository ItemJPARepository;
+    private final ItemJPARepository itemJPARepository;
     private final OrderJPARepository orderJPARepository;
     private final CartJPARepository cartJPARepository;
 
@@ -36,10 +36,13 @@ public class OrderService {
         return new OrderResponse.FindAllByUserDTO(totalPrice, carts);
     }
 
-    
     // (기능5) 주문결과 확인
-    public OrderResponse.FindByIdDTO findById(int id) {
-        return null;
+    public OrderResponse.FindByIdDTO findById(Integer userId) {
+        List<Item> itemList = itemJPARepository.findByUserId(userId);
+
+        OrderResponse.FindByIdDTO responseDTO = new OrderResponse.FindByIdDTO(itemList);
+        return responseDTO;
+
     }
 
     @Transactional
@@ -65,7 +68,7 @@ public class OrderService {
             itemList.add(item);
         }
         try {
-            ItemJPARepository.saveAll(itemList);
+            itemJPARepository.saveAll(itemList);
         } catch (Exception e) {
             throw new Exception500("결재 실패 : " + e.getMessage());
         }
@@ -77,7 +80,6 @@ public class OrderService {
             throw new Exception500("장바구니 초기화 실패 : " + e.getMessage());
         }
     }
-
 
     public List<Cart> findAllByUser() {
         return null;
