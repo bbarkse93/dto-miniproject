@@ -10,9 +10,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.example.kakao._core.errors.exception.Exception404;
-import com.example.kakao.product.ProductResponse.FindByIdV1DTO;
-import com.example.kakao.product.option.Option;
-import com.example.kakao.product.option.OptionJPARepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -22,7 +19,6 @@ import lombok.RequiredArgsConstructor;
 public class ProductService {
 
     private final ProductJPARepository productJPARepository;
-    private final OptionJPARepository optionJPARepository;
 
     // (기능1) 상품 목록보기
     public List<ProductResponse.FindAllDTO> findAll(int page) {
@@ -36,18 +32,9 @@ public class ProductService {
     }
 
     // (기능2) 상품 상세보기
-    // 상품조회 + 옵션 조회
-    public ProductResponse.FindByIdV1DTO findByIdV1(int id) {
+    public ProductResponse.FindByIdDTO findById(int id) {
         Product productPS = productJPARepository.findById(id)
                 .orElseThrow(() -> new Exception404("해당 id의 상품을 찾을 수 없습니다 : " + id));
-        List<Option> optionsPS = optionJPARepository.findByProductId(id);
-        return new ProductResponse.FindByIdV1DTO(productPS, optionsPS);
-    }
-
-    // 양방향맵핑
-    public ProductResponse.FindByIdV2DTO findByIdV2(int id) {
-        Product productPS = productJPARepository.findById(id)
-                .orElseThrow(() -> new Exception404("해당 id의 상품을 찾을 수 없습니다 : " + id));
-        return new ProductResponse.FindByIdV2DTO(productPS);
+        return new ProductResponse.FindByIdDTO(productPS);
     }
 }
