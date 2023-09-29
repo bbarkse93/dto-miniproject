@@ -1,4 +1,4 @@
-package com.example.kakao._core.config.advice;
+package com.example.kakao._core.advice;
 
 import java.util.HashMap;
 import java.util.List;
